@@ -14,17 +14,28 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color(0xffF2F2F2),
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Logo(),
-            _Form(),
-            Labels(),
-            Padding(
-              padding: const EdgeInsets.only( bottom: 10 ),
-              child: Text( 'Términos y condiciones de uso', style: TextStyle( fontWeight: FontWeight.w300 ), ),
+        child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Container(
+            height: MediaQuery.of(context).size.height * 0.95,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Logo( titulo: 'AYLLIPURA', ),
+                _Form(),
+                Labels(
+                  ruta: 'register',
+                  mensaje: '¿No tienes cuenta?',
+                  accion:  'Crea una ahora!',
+                  pushOrPop: 'push',
+                ),
+                Padding(
+                  padding: const EdgeInsets.only( bottom: 10 ),
+                  child: Text( 'Términos y condiciones de uso', style: TextStyle( fontWeight: FontWeight.w300 ), ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       )
     );

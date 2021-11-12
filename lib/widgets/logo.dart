@@ -1,19 +1,33 @@
 import 'package:flutter/material.dart';
 
 class Logo extends StatelessWidget {
-  const Logo({ Key? key }) : super(key: key);
+
+  final String titulo;
+
+  const Logo({
+    Key? key,
+    required this.titulo,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        width: 170.0,
+        width: MediaQuery.of( context).size.width,
         margin: EdgeInsets.only( top: 30.0 ),
         child: Column(
           children: [
-            Image(image: AssetImage( 'assets/tag-logo.png' )),
+            Container(
+              width: 170.0,
+              child: Image(image: AssetImage( 'assets/tag-logo.png' ))
+            ),
             SizedBox( height: 20.0, ),
-            Text( 'Messenger', style: TextStyle( fontSize: 30.0 ), )
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text( this.titulo, style: TextStyle( fontSize: 30.0 ), ),
+            ],
+            )
           ],
         ),
       ),
