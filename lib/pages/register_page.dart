@@ -5,6 +5,9 @@ import 'package:chat/widgets/custom_input.dart';
 import 'package:chat/widgets/logo.dart';
 import 'package:chat/widgets/labels.dart';
 import 'package:chat/widgets/boton_azul.dart';
+import 'package:chat/services/auth_service.dart';
+import 'package:provider/provider.dart';
+import 'package:chat/helpers/mostrar_alerta.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({ Key? key }) : super(key: key);
@@ -55,6 +58,9 @@ class __FormState extends State<_Form> {
 
   @override
   Widget build(BuildContext context) {
+
+    final authService = Provider.of<AuthService>(context);
+
     return Container(
       margin: EdgeInsets.only( top: 40.0 ),
       padding: EdgeInsets.symmetric( horizontal: 50.0 ),
@@ -81,15 +87,34 @@ class __FormState extends State<_Form> {
           SizedBox( height: 10.0, ),
           botonAzul(
             text: 'Registrar',
-            onPressed: () {
-              print( emailCtrl.text );
-              print( passCtrl.text );
+            onPressed: authService.autenticando ? null : () async {
+
+              FocusScope.of(context).unfocus(); // Cerramos el teclado
+
+              final registerOK = await authService.register( nameCtrl.text.trim(), emailCtrl.text.trim(), passCtrl.text.trim() );
+              
+              if( registerOK == 'register ok' ) {
+
+                mostrarAlerta(
+                  context,
+                  'Registro Exitoso!',
+                  'El usuario ${nameCtrl.text.trim()} se registró correctamente',
+                  'usuarios',
+                );
+              } else {
+
+                mostrarAlerta(
+                  context,
+                  'Error en el Registro!',
+                  registerOK
+                );
+              }
             },
           ),
           
         ],
       ),
     );
-  }
 
 }
+  }

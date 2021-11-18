@@ -1,4 +1,6 @@
+import 'package:chat/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 // Importaciones
@@ -15,23 +17,30 @@ class _UsuariosPageState extends State<UsuariosPage> {
 
   RefreshController _refreshController = RefreshController(initialRefresh: false);
 
-
   final usuarios = [
     Usuario( uid: '1', nombre: 'María', email: 'maria@gmail.com', online: true ),
     Usuario( uid: '1', nombre: 'Lorena', email: 'lorena@gmail.com', online: true ),
     Usuario( uid: '1', nombre: 'Joaquín', email: 'joaquin@gmail.com', online: false ),
   ];
+
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
+    final usuario = authService.usuario;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text( 'Mi nombre', style: TextStyle( color: Colors.black54 ), ),
+        title: Text( usuario.nombre, style: TextStyle( color: Colors.black54 ), ),
         elevation: 3.0,
         backgroundColor: Colors.white,
         leading: IconButton(
           icon: Icon( Icons.exit_to_app, color: Colors.black54, ),
-          onPressed: () {},
+          onPressed: () {
+
+            // !DESCONECTARNOS DEL SOCKET SERVER
+            Navigator.pushReplacementNamed( context, 'login' );
+            AuthService.deleteToken();
+          },
         ),
         actions: [
           Container(
